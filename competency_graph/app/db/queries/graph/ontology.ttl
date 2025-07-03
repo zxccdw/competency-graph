@@ -1,0 +1,10 @@
+@prefix : <http://example.org/university#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+:Department a rdfs:Class .          # Кафедра - это класс
+:Competence a rdfs:Class .         # Компетенция - это класс
+
+:hasCompetence a rdf:Property ;    # Связь "имеет компетенцию"
+    rdfs:domain :Department ;      # Связь исходит ТОЛЬКО из кафедр
+    rdfs:range :Competence .       # Связь ведёт ТОЛЬКО к компетенциям
