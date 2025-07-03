@@ -1,0 +1,46 @@
+PREFIX : <http://example.org/university#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+INSERT DATA {
+  ### Добавление кафедр
+  :deptMaterials a :Department ;
+                rdfs:label "Материаловедение" .
+  
+  :deptCybernetics a :Department ;
+                   rdfs:label "Инженерная кибернетика" .
+  
+  :deptMath a :Department ;
+            rdfs:label "Математика" .
+
+  ### Добавление компетенции
+  :compModeling a :Competence ;
+                rdfs:label "Моделирование материалов" .
+  
+  :compUAVControl a :Competence ;
+                  rdfs:label "Управление беспилотниками" .
+  
+  :compNumerical a :Competence ;
+                 rdfs:label "Численные методы" .
+  
+  :compOptimization a :Competence ;
+                    rdfs:label "Оптимизация процессов" .
+  
+  :compML a :Competence ;
+          rdfs:label "Машинное обучение" .
+
+  ### Связывание кафедры с компетенциями
+  :deptMaterials :hasCompetence :compModeling .
+  
+  :deptCybernetics :hasCompetence :compUAVControl , 
+                   :compML .
+  
+  :deptMath :hasCompetence :compNumerical , 
+            :compOptimization .
+}
+
+
+#[Кафедра материаловедения] --hasCompetence--> [Моделирование материалов]
+#[Инженерная кибернетика] --hasCompetence--> [Управление беспилотниками]
+#                                      \---> [Машинное обучение]
+#[Математика] --hasCompetence--> [Численные методы]
+#                      \---> [Оптимизация процессов]
