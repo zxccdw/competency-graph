@@ -1,13 +1,20 @@
-from typing import List, Optional
-from pydantic import BaseModel
+from enum import Enum
+from typing import List
+from pydantic import BaseModel, Field
 
 
-class CompetencyNode(BaseModel):
-    """Модель узла компетенции в графе"""
+class NodeType(str, Enum):
+    """Тип узла в онтологии"""
+    CLASS = 'class'
+    PROPERTY = 'property'
+    INSTANCE = 'instance'
+
+
+class OntologyNode(BaseModel):
+    """Модель узла в онтологии"""
     id: str
-    name: str
-    level: int
-    description: Optional[str] = None
+    label: str
+    type: NodeType = Field(default=NodeType.CLASS)
 
 
 class CompetencyEdge(BaseModel):
@@ -17,6 +24,6 @@ class CompetencyEdge(BaseModel):
 
 
 class GraphPart(BaseModel):
-    """Часть графа компетенций"""
-    nodes: List[CompetencyNode]
+    """Часть графа онтологии"""
+    nodes: List[OntologyNode]
     edges: List[CompetencyEdge]

@@ -1,7 +1,7 @@
 import logging
 import asyncpg
 import orjson
-from app.dependencies.config import Config
+from dependencies.config import Config
 
 
 logger = logging.getLogger(__name__)
@@ -26,9 +26,7 @@ async def init_connection(conn: asyncpg.Connection):
 async def create_db_pool(config: Config):
     """Создание пула подключений к PostgreSQL"""
     async with asyncpg.create_pool(
-        dsn=config.postgres.dsn,
-        min_size=config.postgres.pool_min_size,
-        max_size=config.postgres.pool_max_size,
+        dsn=config.database.dsn,
         statement_cache_size=0,
         init=init_connection,
     ) as pool:

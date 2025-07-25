@@ -1,6 +1,6 @@
 from typing import Optional, List, Dict, Any
 from SPARQLWrapper import SPARQLWrapper, JSON, POST
-from app.config.config import settings
+from config.config import settings
 
 
 class GraphDBClient:

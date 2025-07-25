@@ -1,7 +1,7 @@
 from typing import AsyncGenerator
 from SPARQLWrapper import SPARQLWrapper, JSON, POST
 
-from app.dependencies.config import Config
+from dependencies.config import Config
 
 
 async def create_graphdb_client(config: Config) -> AsyncGenerator[SPARQLWrapper, None]:
