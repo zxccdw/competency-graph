@@ -37,7 +37,7 @@ class CompetencyEdge(BaseModel):
 
 class GraphPart(BaseModel):
     nodes: List[CompetencyNode]
-    edges: List[CompetencyEdge]
+    links: List[CompetencyEdge] #поменяла
 
 class CompetencyVersion(BaseModel):
     node_id: str

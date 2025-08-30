@@ -1,0 +1,12 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\app",
+    "\\app\\api",
+    "\\app\\api\\v1",
+    "\\app\\dao",
+    "\\app\\models"
+  ],
+  "SelectedNode": "\\app\\models\\graph.py",
+  "PreviewInSolutionExplorer": false
+}

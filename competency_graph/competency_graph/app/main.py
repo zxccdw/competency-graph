@@ -7,6 +7,8 @@ from dependencies import Container
 
 
 def create_app() -> FastAPI:
+    
+    print('начало')
     container = Container()
     container.wire(packages=["api.v1", "dao"])
 
@@ -34,6 +36,9 @@ def create_app() -> FastAPI:
 
 
 app = create_app()
+for route in app.routes:
+    print(route.path, route.methods)
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=80)

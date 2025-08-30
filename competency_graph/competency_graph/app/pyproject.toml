@@ -1,0 +1,15 @@
+[project]
+name = "competency-graph"
+version = "0.1.0"
+description = "Competency Graph API"
+requires-python = ">=3.13"
+
+dependencies = [
+    "fastapi>=0.109.0",
+    "uvicorn>=0.27.0",
+    "pydantic>=2.5.0",
+    "dependency-injector>=4.41.0",
+    "SPARQLWrapper>=2.0.0",
+    "orjson>=3.9.10",
+    "asyncpg"
+]

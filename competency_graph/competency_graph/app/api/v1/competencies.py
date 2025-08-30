@@ -1,22 +1,56 @@
 from typing import List
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Body
 
-from models.graph import OntologyNode, GraphPart
+from models.graph import GraphResponse, RDFNode, OntologyNode
+
 from dao.competency_dao import CompetencyDAO
+
+
 
 router = APIRouter()
 
 
-@router.get("/competencies/graph/{node_id}", response_model=GraphPart)
+#тест 
+@router.post("/competencies/test")
+async def test_endpoint(data: dict = Body(...)):
+    print(">>> ЗАШЛО В ЭНДПОИНТ test_endpoint")
+    return {"echo": data}
+
+
+# Получить граф из БД
+@router.get("/competencies/graph", response_model=GraphResponse)
+async def get_graph() -> dict:
+    print("Зашли в get_graph")
+    try:
+        return await CompetencyDAO.get_graph_from_db()
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+# Сохранить граф в БД 1 версия
+@router.post("/competencies/graph")
+async def save_graph(graph_data: dict = Body(...)) -> dict:
+    print("Зашли в save_graph")
+    try:
+        await CompetencyDAO.save_graph_to_db(graph_data)
+        return {"status": "success"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+
+@router.get("/competencies/graph/{node_id}", response_model=GraphResponse)
 async def get_graph_part(
     node_id: str,
-    depth: int = Query(2, ge=1, le=5, description="Глубина обхода графа"),
-    limit: int = Query(50, ge=1, le=100, description="Количество узлов на странице"),
-    offset: int = Query(0, ge=0, description="Смещение для пагинации"),
-) -> GraphPart:
+    depth: int = Query(2, ge=1, le=5),
+    limit: int = Query(50, ge=1, le=100),
+    offset: int = Query(0, ge=0),
+) -> dict:
     """
-    Получить часть графа компетенций, начиная с указанного узла.
-    Поддерживает пагинацию и ограничение глубины обхода.
+    Получает часть графа в формате:
+    {
+        "nodes": [{"id": "...", "label": "...", "type": "..."}],
+        "links": [{"source": "...", "target": "...", "predicate": "..."}]
+    }
     """
     try:
         return await CompetencyDAO.get_graph_part(
@@ -27,6 +61,20 @@ async def get_graph_part(
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+
+@router.post("/competencies/graph/from_json")
+async def get_graph_from_json(
+    graph_data: dict = Body(...),
+    start_from: str = Query(...),
+    depth: int = Query(2)
+):
+    return await CompetencyDAO.get_graph_part_from_json(
+        graph_data=graph_data,
+        start_from=start_from,
+        depth=depth
+    )
 
 
 @router.get("/competencies/{node_id}/ancestors", response_model=List[OntologyNode])
