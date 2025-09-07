@@ -1,0 +1,24 @@
+PREFIX : <http://example.org/university#> 
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+DELETE {
+  ?node ?p ?o .
+  ?child ?cp ?co .
+}
+WHERE {
+  # надо здесь указать URI узла, который нужно удалить
+  VALUES ?node { :node_to_delete }
+
+  # Находим сам узел и все его свойства
+  ?node ?p ?o .
+  
+  # Находим всех потомков через транзитивное замыкание
+  ?node :hasSubCompetence* ?child .
+  
+  # Находим все свойства потомков
+  ?child ?cp ?co .
+  
+  # Фильтр для избежания циклических ссылок
+  FILTER(!sameTerm(?child, ?node))
+}
