@@ -1,0 +1,32 @@
+@prefix : <http://example.org/university#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+:Department a rdfs:Class .
+:Competence a rdfs:Class .
+
+# Основные связи между уровнями
+:hasLevel1 a rdf:Property ;
+    rdfs:domain :Department ;
+    rdfs:range :Competence .
+
+:hasLevel2 a rdf:Property ;
+    rdfs:domain :Competence ;
+    rdfs:range :Competence .
+
+:hasLevel3 a rdf:Property ;
+    rdfs:domain :Competence ;
+    rdfs:range :Competence .
+
+:hasLevel4 a rdf:Property ;
+    rdfs:domain :Competence ;
+    rdfs:range :Competence .
+
+:hasLevel5 a rdf:Property ;
+    rdfs:domain :Competence ;
+    rdfs:range :Competence .
+
+# Транзитивные свойства для автоматического каскада
+:hasSubCompetence a owl:TransitiveProperty ;
+    owl:propertyChainAxiom (:hasLevel1 :hasLevel2 :hasLevel3 :hasLevel4 :hasLevel5) .
